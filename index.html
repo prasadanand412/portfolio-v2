@@ -8,6 +8,10 @@
 <meta property="og:title" content="Prasad Anand — AI/ML Engineer" />
 <meta property="og:description" content="Computer engineering student and AI/ML intern in Pune, IN. Applied machine learning, NLP systems, and pragmatic backend engineering." />
 <meta property="og:type" content="website" />
+<meta property="og:image" content="/logo-500.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/logo-192.png" />
+<link rel="icon" type="image/png" sizes="500x500" href="/logo-500.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="/logo-192.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
@@ -71,25 +75,25 @@
       <!-- Notebook cell block -->
       <div class="notebook" role="img" aria-label="Notebook cell demonstrating Prasad's engineer bio, a training loss curve, and a live command prompt">
         <div class="cell md">
-          <div class="cell-gutter">md</div>
-          <div class="cell-body"># prasad_bio.ipynb &middot; cell 01</div>
-        </div>
-        <div class="cell">
-          <div class="cell-gutter"><span class="marker">In [1]:</span></div>
-          <div class="cell-body code"><span class="tok-kw">from</span> prasad <span class="tok-kw">import</span> Engineer
+            <div class="cell-gutter">md</div>
+            <div class="cell-body"># oiltrace.ipynb &middot; cell 01</div>
+          </div>
+          <div class="cell">
+            <div class="cell-gutter"><span class="marker">In [1]:</span></div>
+            <div class="cell-body code"><span class="tok-kw">from</span> oiltrace <span class="tok-kw">import</span> SpillTracer
 
-me = Engineer(
-    role=<span class="tok-str">"ML Intern"</span>,
-    org=<span class="tok-str">"Cubeage Technologies"</span>,
-    stack=[<span class="tok-str">"python"</span>, <span class="tok-str">"pytorch"</span>, <span class="tok-str">"nlp"</span>],
-    building=<span class="tok-str">"docusense &middot; nlp pipelines"</span>,
+trace = SpillTracer(
+    imagery=<span class="tok-str">"sentinel-2 &middot; sar"</span>,
+    drift=[<span class="tok-str">"wind"</span>, <span class="tok-str">"current"</span>, <span class="tok-str">"tide"</span>],
+    stack=[<span class="tok-str">"python"</span>, <span class="tok-str">"pytorch"</span>, <span class="tok-str">"cuda"</span>],
+    building=<span class="tok-str">"spill origin tracer"</span>,
 )
-me.<span class="tok-fn">summary</span>()<span class="caret" aria-hidden="true"></span></div>
-        </div>
+trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="true"></span></div>
+          </div>
         <div class="cell out">
           <div class="cell-gutter">Out[1]:</div>
           <div class="cell-body">
-            <div><span class="tok-comment"># training curve &middot; docusense classifier v2</span></div>
+            <div><span class="tok-comment"># source localization &middot; oiltrace v2</span></div>
             <svg class="mini-chart" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">
               <defs>
                 <pattern id="ga" width="30" height="15" patternUnits="userSpaceOnUse">
@@ -104,7 +108,7 @@ me.<span class="tok-fn">summary</span>()<span class="caret" aria-hidden="true"><
               <circle cx="300" cy="10" r="2.2" fill="var(--accent)"/>
             </svg>
             <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-top:4px;">
-              <span>epoch 0</span><span>loss &darr; 0.021</span><span>epoch 50</span>
+              <span>tile 0</span><span>iou &uarr; 0.84</span><span>tile 500</span>
             </div>
           </div>
         </div>
