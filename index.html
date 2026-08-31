@@ -1,8 +1,22 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<script>(function(){
+  /* Resolve the theme before first paint: an explicit choice wins, else follow the OS.
+     Must stay inline and blocking - moving it into app.js reintroduces the flash.
+     vercel.json pins a CSP sha256 of this block; run `npm run csp-hash` after editing. */
+  var t = 'dark';
+  try {
+    var saved = localStorage.getItem('theme');
+    t = (saved === 'light' || saved === 'dark')
+      ? saved
+      : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  } catch (e) { /* private mode / storage disabled - fall through to dark */ }
+  document.documentElement.dataset.theme = t;
+})();</script>
 <title>Prasad Anand — AI/ML Engineer</title>
 <meta name="description" content="Prasad Anand — computer engineering student and AI/ML intern in Pune, IN. Applied machine learning, NLP systems, and pragmatic backend engineering." />
 <meta property="og:title" content="Prasad Anand — AI/ML Engineer" />
@@ -12,9 +26,8 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/logo-192.png" />
 <link rel="icon" type="image/png" sizes="500x500" href="/logo-500.png" />
 <link rel="apple-touch-icon" sizes="192x192" href="/logo-192.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+<link rel="preload" href="/static/fonts/jetbrains-mono-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/static/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link href="/static/style.css" rel="stylesheet" />
 </head>
 <body>
@@ -60,14 +73,16 @@
           Prasad <span class="accent">Anand</span>.
         </h1>
         <p class="hero-role">
-          <span class="k">ML Intern @ Cubeage Technologies Pvt. Ltd.</span> &mdash; building applied ML pipelines
-          and <span class="k">NLP systems</span>. Currently developing
+          <span class="k">ML Intern @ Cubeage Technologies Pvt. Ltd.</span> &mdash; building
+          <span class="k">NLP and RAG systems</span>, currently a zero-shot document analyzer
+          and classifier on <span class="k">bart-large-mnli</span>. Also developing
           <span class="k">OilTrace</span>, a satellite-based spill origin tracer that detects oil spills
           in SAR imagery and backtraces drift to the source using wind, current, tide and
           sea-surface temperature. Previously ML intern @ Tantrata Digital.
         </p>
         <div class="hero-cta">
           <a href="#projects" class="btn primary">view projects <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          <a href="/prasad-anand-resume.pdf" class="btn" target="_blank" rel="noopener">view resume <span class="arrow" aria-hidden="true">&#8599;</span></a>
           <a href="#contact" class="btn">get in touch</a>
         </div>
       </div>
@@ -120,7 +135,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     </div>
 
     <dl class="coords">
-      <div><dt>current focus</dt><dd>NLP &middot; document AI &middot; LLM pipelines</dd></div>
+      <div><dt>current focus</dt><dd>NLP &middot; RAG &middot; document AI</dd></div>
       <div><dt>internships</dt><dd>02 completed &middot; 01 active</dd></div>
       <div><dt>open to</dt><dd>Remote &middot; Collab &middot; Research</dd></div>
       <div><dt>last commit</dt><dd id="last-commit">&mdash;</dd></div>
@@ -149,9 +164,10 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
         </p>
         <p>
           My work sits between two disciplines. On one side, training and evaluating models &mdash;
-          currently focused on sequence models (LSTM, small transformers) for financial and
-          health-signal data. On the other, the unglamorous plumbing that makes them useful:
-          ETL, schema design in PostgreSQL, deployment on Vercel/Supabase.
+          currently transformer-based NLP: zero-shot document classification, retrieval-augmented
+          pipelines, and the evaluation harnesses that tell you whether either actually works.
+          On the other, the unglamorous plumbing that makes them useful: ETL, schema design in
+          PostgreSQL, deployment on Vercel/Supabase.
         </p>
         <p>
           I write C++ when the problem calls for it &mdash; graph algorithms, competitive programming,
@@ -234,7 +250,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
   <div class="wrap cli-strip-inner">
     <span><span class="prompt">$</span> <span class="cmd">cat ~/portfolio/skills.yaml</span></span>
     <span class="sep">|</span>
-    <span class="out">21 tools &middot; 4 tiers &middot; sorted by comfort</span>
+    <span class="out">31 tools &middot; 4 tiers &middot; sorted by comfort</span>
     <span class="sep">|</span>
     <span><span class="prompt">$</span> <span class="cmd">tier=1 grep .</span></span>
     <span class="out">python, c++, numpy, postgres, git, linux</span>
@@ -267,6 +283,8 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     <div class="skills-row">
       <div class="skills-row-label"><span class="num">02</span> &middot; comfortable</div>
       <div class="skills-cloud">
+        <span class="chip t2">NLP &middot; spaCy &middot; Transformers</span>
+        <span class="chip t2">RAG &middot; embeddings &middot; vector search</span>
         <span class="chip t2">PyTorch</span>
         <span class="chip t2">TensorFlow / Keras</span>
         <span class="chip t2">scikit-learn</span>
@@ -282,7 +300,6 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     <div class="skills-row">
       <div class="skills-row-label"><span class="num">03</span> &middot; exploring</div>
       <div class="skills-cloud">
-        <span class="chip t3">NLP &middot; spaCy &middot; Transformers</span>
         <span class="chip t3">Local LLMs &middot; Ollama &middot; Qwen 2.5</span>
         <span class="chip t3">Gemini API</span>
         <span class="chip t3">CUDA basics</span>
@@ -315,7 +332,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     <span class="out">3 commits &middot; head @ cubeage</span>
     <span class="sep">|</span>
     <span><span class="prompt">$</span> <span class="cmd">whoami</span></span>
-    <span class="out">ml_intern &middot; building docusense</span>
+    <span class="out">ml_intern &middot; nlp &middot; rag systems</span>
   </div>
 </div>
 
@@ -326,7 +343,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
       <div class="section-tag"><b>&sect; 03</b> / experience</div>
       <div>
         <h2 class="section-title" id="experience-title">Where I've <i>shipped</i>.</h2>
-        <p class="section-sub">Two internships to date, one active. Compact log &mdash; reverse chronological.</p>
+        <p class="section-sub">Three internships to date, one active. Compact log &mdash; reverse chronological.</p>
       </div>
     </div>
 
@@ -337,17 +354,16 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
           <h3 class="xp-role">ML Intern</h3>
           <div class="xp-company">CUBEAGE TECHNOLOGIES PVT. LTD.</div>
           <p class="xp-desc">
-            Building applied ML pipelines and NLP systems. Currently developing
-            <em>DocuSense</em>, a document analyzer that reads contracts, rental agreements
-            and resumes and extracts key terms, obligations, and ATS-style scoring &mdash;
-            powered by local LLMs (Qwen&nbsp;2.5&nbsp;7B via Ollama) and the Gemini API.
+            Building <em>NLP and RAG systems</em>. Currently developing a document analyzer
+            and classifier on <em>bart-large-mnli</em>, using zero-shot inference to label
+            document types without task-specific training data.
           </p>
         </div>
         <div class="xp-tags">
           <span>python</span>
-          <span>nlp &middot; transformers</span>
-          <span>qwen &middot; gemini</span>
-          <span>ollama</span>
+          <span>nlp &middot; rag</span>
+          <span>bart-large-mnli</span>
+          <span>transformers</span>
         </div>
         <div class="xp-arrow" aria-hidden="true">&rarr;</div>
       </article>
@@ -428,7 +444,10 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
       <article class="proj wide" data-tags="ml">
         <div class="proj-head">
           <span class="proj-idx">01 &middot; nlp &middot; document AI</span>
-          <span class="proj-status live">shipped</span>
+          <span class="proj-badges">
+            <span class="proj-status hack">hackathon</span>
+            <span class="proj-status live">shipped</span>
+          </span>
         </div>
         <div class="proj-figure">
           <!-- Document -> tokens -> extracted fields diagram -->
@@ -502,8 +521,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
           A document analyzer that reads any long-form document &mdash; land registration, rental
           agreements, resumes &mdash; and returns the important terms, clauses and risks as
           structured data. For resumes it produces an ATS-style score. Runs on <em>local LLMs</em>
-          (Qwen 2.5 7B via Ollama) with the Google Gemini API as a fallback. Building this
-          currently at Cubeage Technologies.
+          (Qwen 2.5 7B via Ollama) with the Google Gemini API as a fallback.
         </p>
         <div class="proj-foot">
           <div class="proj-stack">
@@ -700,6 +718,8 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
       <div></div>
       <div class="contact-info">
         <dl>
+          <dt>// resume</dt>
+          <dd><a href="/prasad-anand-resume.pdf" download>prasad-anand-resume.pdf <span aria-hidden="true">&darr;</span></a></dd>
           <dt>// email</dt>
           <dd><a href="mailto:prasadanand412@gmail.com">prasadanand412@gmail.com</a></dd>
           <dt>// linkedin</dt>
@@ -714,20 +734,23 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
           <dd>Pune, Maharashtra &middot; IN &middot; IST</dd>
         </dl>
       </div>
-      <form id="contact-form">
+      <!-- No backend by design: submitting hands off to the visitor's mail client.
+           method="post" + the mailto action matter for security - without them a
+           JS failure would fall back to a GET and put the message in the URL. -->
+      <form id="contact-form" method="post" action="mailto:prasadanand412@gmail.com" enctype="text/plain">
         <div class="field">
           <label for="n">01 &middot; full name</label>
-          <input id="n" name="name" required placeholder="jane doe"/>
+          <input id="n" name="name" required autocomplete="name" placeholder="jane doe"/>
         </div>
         <div class="field">
           <label for="e">02 &middot; email address</label>
-          <input id="e" name="email" type="email" required placeholder="jane@company.com"/>
+          <input id="e" name="email" type="email" required autocomplete="email" placeholder="jane@company.com"/>
         </div>
         <div class="field">
           <label for="m">03 &middot; message</label>
           <textarea id="m" name="message" required placeholder="what are you working on?"></textarea>
         </div>
-        <p class="form-note">This form is not yet wired to a backend &mdash; messages are not sent. Please use the email link above for now.</p>
+        <p class="form-note">No backend here by design &mdash; sending opens a prefilled draft in your mail client, so nothing is stored or transmitted by this site. The email address is on the left if you prefer.</p>
         <div class="form-actions">
           <small>replies within 48h &middot; IST business hours</small>
           <button type="submit" class="btn primary">send message <span class="arrow" aria-hidden="true">&rarr;</span></button>
@@ -745,6 +768,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     <div>&copy; 2026 &middot; built by hand with html &amp; care</div>
     <div class="foot-links">
       <a href="#work">&uarr; top</a>
+      <a href="/prasad-anand-resume.pdf" target="_blank" rel="noopener">resume</a>
       <a href="#projects">projects</a>
       <a href="#contact">contact</a>
     </div>

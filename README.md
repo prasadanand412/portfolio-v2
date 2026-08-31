@@ -12,7 +12,7 @@ This project was originally scaffolded on Hono + Cloudflare Pages, then **conver
 
 - **Framework**: Vite (static build only, no SSR/framework plugin)
 - **Entry point**: `index.html` at the project root (standard Vite convention)
-- **Static assets**: `public/static/style.css`, `public/static/app.js` — copied verbatim into `dist/static/` on build
+- **Static assets**: `public/static/style.css`, `public/static/app.js`, `public/static/fonts/*.woff2` (copied verbatim into `dist/static/` on build)
 - **No backend / no API routes / no serverless functions** — this is a 100% static site
 - **Output**: `npm run build` → `dist/` (`dist/index.html`, `dist/static/style.css`, `dist/static/app.js`)
 
@@ -38,13 +38,12 @@ This project was originally scaffolded on Hono + Cloudflare Pages, then **conver
 CLI strips act as section dividers throughout, matching the "engineer's notebook" aesthetic.
 
 ## User Guide
-Visit `/` — that's the entire site (no other routes). Use the top nav or scroll to move between sections; the active nav link highlights based on scroll position. Click the theme toggle (top-right) to switch dark/light — the choice persists via `localStorage`. In the Projects section, use the filter buttons to narrow the grid by tag. The contact form is a **front-end stub only** — submitting it just changes the button label to "queued ✓"; no message is actually sent (see Not Yet Implemented below).
+Visit `/` — that's the entire site (no other routes). Use the top nav or scroll to move between sections; the active nav link highlights based on scroll position. The theme follows the OS setting (`prefers-color-scheme`) on first visit and keeps tracking OS changes until an explicit choice is made. Click the theme toggle (top-right) to override dark/light — the choice persists via `localStorage`. In the Projects section, use the filter buttons to narrow the grid by tag. The contact form has **no backend by design**: submitting composes a prefilled `mailto:` draft and hands it to the visitor's mail client, so nothing is stored or transmitted by this site.
 
 ## Not Yet Implemented
-- **Contact form backend**: currently `event.preventDefault()` + a client-side "queued ✓" label swap. No email is sent. If a real backend is wanted, this would need a small serverless function (Vercel Function) or a third-party form service (Formspree, Resend, etc.) — reintroducing minimal server-side code only for this feature, if desired.
+- **Contact form backend**: the form hands off to the visitor's mail client via `mailto:` rather than posting anywhere. Server-side delivery would need a Vercel Function or a form service (Formspree, Resend) - the only feature that would justify server-side code here.
 - **Analytics**: none wired.
 - **OG image**: meta tags reference title/description only; no static Open Graph image generated yet.
-- **Self-hosted fonts**: currently loaded from Google Fonts CDN (JetBrains Mono + Fraunces). Could be self-hosted to remove the third-party dependency / FOUT.
 
 ## Recommended Next Steps
 1. Deploy to Vercel (see below).
@@ -59,13 +58,45 @@ Visit `/` — that's the entire site (no other routes). Use the top nav or scrol
 - **Radii**: none — all rectangles, by design
 - **Shadows**: none — depth via 1px rules and elevation tokens only
 
+## Fonts (self-hosted)
+
+JetBrains Mono and Fraunces are vendored as woff2 in `public/static/fonts/` (latin +
+latin-ext subsets, variable weight ranges), with the `@font-face` rules at the top of
+`public/static/style.css`. No visitor request reaches `fonts.googleapis.com` or
+`fonts.gstatic.com`, which removes a third-party dependency that cannot carry SRI and stops
+disclosing every visitor's IP to Google.
+
+`latin-ext` files only download if the page actually renders those codepoints, so a normal
+English visit fetches ~200 KB of fonts and then caches them; two faces are preloaded in
+`<head>`. Filenames are **not** content-hashed: if you regenerate them from the Google css2
+API, rename them so caches cannot serve stale glyphs.
+
+## Security headers & CSP
+
+`vercel.json` sets response headers on every path: a strict `Content-Security-Policy` plus
+HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+`Cross-Origin-Opener-Policy` and `Permissions-Policy`. The CSP is tight, so before editing:
+
+- **`script-src` pins a sha256 of the one inline `<script>`** in `index.html` (the pre-paint
+  theme resolver). Editing that block, including its whitespace, silently breaks theming in
+  production. Run `npm run csp-hash` afterwards and paste the output into `script-src`.
+- **`style-src` needs `'unsafe-inline'`** because the page uses `style="..."` attributes and
+  `<style>` blocks inside the inline SVG figures. Removing those is the only way to drop it.
+- **`img-src 'self'`** deliberately omits `data:` since nothing uses data-URI images today.
+  Add it back if that changes.
+- **`connect-src`** allows `https://api.github.com` for the hero's last-commit stamp.
+- **`form-action 'self' mailto:`** allows the contact form's `mailto:` handoff.
+- On **Vercel preview deployments** the injected Vercel toolbar may be blocked by
+  `script-src 'self'`. Production is unaffected.
+
 ## Deployment
+
 
 ### Vercel (current target)
 - **Platform**: Vercel — static build, zero serverless functions
 - **Build command**: `npm run build`
 - **Output directory**: `dist`
-- **Config**: `vercel.json` sets `buildCommand`, `outputDirectory`, and clean URLs; no `functions`/`rewrites` for an API are configured since there is no backend.
+- **Config**: `vercel.json` sets `buildCommand`, `outputDirectory`, clean URLs, and the security headers described above; no `functions`/`rewrites` for an API are configured since there is no backend.
 - **Deploy steps**:
   ```bash
   npm install -g vercel   # if not already installed
@@ -79,7 +110,7 @@ Visit `/` — that's the entire site (no other routes). Use the top nav or scrol
 ```bash
 npm install
 npm run build
-npm run preview   # vite preview --host 0.0.0.0 --port 3000 (via PM2/ecosystem.config.cjs in this sandbox)
+npm run preview   # vite preview on localhost:4173
 ```
 
-- **Last Updated**: 2026-08-29 (converted from Cloudflare Pages/Hono to a static Vite build for Vercel)
+- **Last Updated**: 2026-08-31 (self-hosted fonts, OS-aware theme with pre-paint resolve, CSP + security headers, mailto contact handoff, real last-commit stamp, dead/duplicate assets removed)
