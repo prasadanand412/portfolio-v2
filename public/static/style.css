@@ -497,8 +497,14 @@ a { color: inherit; text-decoration: none; }
 .proj:hover { background: var(--bg-elev); }
 .proj.wide { grid-column: span 4; }
 .proj.narrow { grid-column: span 2; }
+.proj.full { grid-column: span 6; }
+/* The full-width feature card carries a wide pipeline diagram, so it gets a
+   taller figure band - at 130px the 7:1 viewBox letterboxes down to a sliver. */
+.proj.full .proj-figure { height: 180px; }
 .proj-head {
   display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  /* narrow cards carry two badges plus a long index label - wrap, do not squeeze */
+  flex-wrap: wrap;
 }
 .proj-idx { font-size: 11px; color: var(--muted-2); letter-spacing: 0.05em; }
 .proj-status {

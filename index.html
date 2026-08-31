@@ -164,9 +164,9 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
         </p>
         <p>
           My work sits between two disciplines. On one side, training and evaluating models &mdash;
-          currently transformer-based NLP: zero-shot document classification, retrieval-augmented
-          pipelines, and the evaluation harnesses that tell you whether either actually works.
-          On the other, the unglamorous plumbing that makes them useful: ETL, schema design in
+          currently transformer-based NLP: zero-shot document classification with NLI models, and
+          the evaluation harnesses that tell you whether it actually works. Retrieval is the
+          newer ground I am working through. On the other, the unglamorous plumbing that makes them useful: ETL, schema design in
           PostgreSQL, deployment on Vercel/Supabase.
         </p>
         <p>
@@ -284,7 +284,6 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
       <div class="skills-row-label"><span class="num">02</span> &middot; comfortable</div>
       <div class="skills-cloud">
         <span class="chip t2">NLP &middot; spaCy &middot; Transformers</span>
-        <span class="chip t2">RAG &middot; embeddings &middot; vector search</span>
         <span class="chip t2">PyTorch</span>
         <span class="chip t2">TensorFlow / Keras</span>
         <span class="chip t2">scikit-learn</span>
@@ -300,6 +299,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     <div class="skills-row">
       <div class="skills-row-label"><span class="num">03</span> &middot; exploring</div>
       <div class="skills-cloud">
+        <span class="chip t3">RAG &middot; embeddings &middot; vector search</span>
         <span class="chip t3">Local LLMs &middot; Ollama &middot; Qwen 2.5</span>
         <span class="chip t3">Gemini API</span>
         <span class="chip t3">CUDA basics</span>
@@ -412,7 +412,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
   <div class="wrap cli-strip-inner">
     <span><span class="prompt">$</span> <span class="cmd">ls ~/projects</span></span>
     <span class="sep">|</span>
-    <span class="out">docusense/&nbsp; oiltrace/&nbsp; wellnesspluss/&nbsp; blood-bank/</span>
+    <span class="out">oiltrace/&nbsp; docusense/&nbsp; wellnesspluss/&nbsp; blood-bank/&nbsp; doc-classifier/</span>
     <span class="sep">|</span>
     <span><span class="prompt">$</span> <span class="cmd">wc -l **/*.py</span></span>
     <span class="out">~ 8.4k loc python</span>
@@ -430,7 +430,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
           <p class="section-sub">A short set of projects that show how I think &mdash; across ML, systems, and web.</p>
         </div>
         <div class="proj-filter" role="tablist" aria-label="Filter projects">
-          <button class="filter-btn on" data-filter="all" role="tab" aria-selected="true">all &middot; 04</button>
+          <button class="filter-btn on" data-filter="all" role="tab" aria-selected="true">all &middot; 05</button>
           <button class="filter-btn" data-filter="ml" role="tab" aria-selected="false">ml / nlp</button>
           <button class="filter-btn" data-filter="sys" role="tab" aria-selected="false">systems</button>
           <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">web</button>
@@ -440,80 +440,146 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
 
     <div class="proj-grid">
 
-      <!-- 01 DocuSense (wide feature) -->
-      <article class="proj wide" data-tags="ml">
+      <!-- 01 OilTrace (wide feature) -->
+      <article class="proj wide" data-tags="ml sys">
         <div class="proj-head">
-          <span class="proj-idx">01 &middot; nlp &middot; document AI</span>
+          <span class="proj-idx">01 &middot; sat imagery &middot; SIH</span>
+          <span class="proj-status">in development</span>
+        </div>
+        <div class="proj-figure">
+          <!-- SAR tile with detected spill, dashed backtrace to a predicted source, drift inputs -->
+          <svg viewBox="0 0 680 100" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram: an oil spill detected on a SAR ocean tile, with a dashed backtrace arc running from the spill to a predicted source point, driven by wind, current, tide and sea-surface-temperature inputs">
+            <defs>
+              <pattern id="sea" width="12" height="12" patternUnits="userSpaceOnUse">
+                <rect width="12" height="12" fill="var(--bg)"/>
+                <path d="M12 0 L0 0 0 12" fill="none" stroke="var(--rule-strong)" stroke-width="0.25" opacity="0.55"/>
+              </pattern>
+            </defs>
+
+            <!-- ocean tile -->
+            <rect x="16" y="12" width="300" height="80" fill="url(#sea)" stroke="var(--rule-strong)" stroke-width="0.6"/>
+            <text x="16" y="8" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">sentinel-1 &middot; sar tile</text>
+
+            <!-- wind field across the top of the tile -->
+            <g stroke="var(--muted)" stroke-width="0.5" opacity="0.65">
+              <line x1="110" y1="24" x2="128" y2="24"/><line x1="125" y1="22" x2="128" y2="24"/><line x1="125" y1="26" x2="128" y2="24"/>
+              <line x1="160" y1="24" x2="178" y2="24"/><line x1="175" y1="22" x2="178" y2="24"/><line x1="175" y1="26" x2="178" y2="24"/>
+              <line x1="210" y1="24" x2="228" y2="24"/><line x1="225" y1="22" x2="228" y2="24"/><line x1="225" y1="26" x2="228" y2="24"/>
+            </g>
+
+            <!-- detected spill -->
+            <path d="M262,50 C272,46 282,52 280,62 C284,70 274,76 266,72 C258,76 252,66 258,60 C254,54 258,50 262,50 Z"
+                  fill="var(--accent)" opacity="0.85"/>
+            <path d="M262,50 C272,46 282,52 280,62 C284,70 274,76 266,72 C258,76 252,66 258,60 C254,54 258,50 262,50 Z"
+                  fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.6"/>
+            <text x="268" y="86" text-anchor="middle" style="font:9px 'JetBrains Mono',monospace; fill:var(--accent)">spill mask</text>
+
+            <!-- backtrace to predicted source -->
+            <path d="M258 60 Q164 40 74 56" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <path d="M84 51 L72 57 L84 62 Z" fill="var(--accent)"/>
+            <circle cx="60" cy="58" r="3.5" fill="none" stroke="var(--accent)" stroke-width="1"/>
+            <circle cx="60" cy="58" r="1.6" fill="var(--accent)"/>
+            <text x="60" y="76" text-anchor="middle" style="font:9px 'JetBrains Mono',monospace; fill:var(--accent)">src?</text>
+            <text x="166" y="36" text-anchor="middle" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted)">backtrace</text>
+
+            <!-- divider -->
+            <line x1="344" y1="14" x2="344" y2="90" stroke="var(--rule)" stroke-width="0.8" stroke-dasharray="2 3"/>
+
+            <!-- drift inputs -->
+            <text x="366" y="22" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">drift model &middot; inputs</text>
+            <g style="font:9.5px 'JetBrains Mono',monospace; fill:var(--ink-strong)">
+              <g stroke="var(--accent)" stroke-width="0.7" fill="none">
+                <line x1="366" y1="36" x2="378" y2="36"/><line x1="375" y1="34" x2="378" y2="36"/><line x1="375" y1="38" x2="378" y2="36"/>
+                <line x1="366" y1="50" x2="378" y2="50"/><line x1="375" y1="48" x2="378" y2="50"/><line x1="375" y1="52" x2="378" y2="50"/>
+                <line x1="366" y1="64" x2="378" y2="64"/><line x1="375" y1="62" x2="378" y2="64"/><line x1="375" y1="66" x2="378" y2="64"/>
+                <line x1="366" y1="78" x2="378" y2="78"/><line x1="375" y1="76" x2="378" y2="78"/><line x1="375" y1="80" x2="378" y2="78"/>
+              </g>
+              <text x="386" y="39">wind</text>
+              <text x="386" y="53">current</text>
+              <text x="386" y="67">tide</text>
+              <text x="386" y="81">sea-surface temp</text>
+            </g>
+
+            <!-- arrow into the output -->
+            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
+              <line x1="500" y1="52" x2="536" y2="52" stroke-dasharray="3 3"/>
+              <path d="M533 48 L539 52 L533 56" stroke="var(--accent)"/>
+            </g>
+
+            <!-- source estimate -->
+            <rect x="552" y="26" width="112" height="52" fill="none" stroke="var(--rule)" stroke-width="0.8"/>
+            <text x="664" y="8" text-anchor="end" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">origin.json</text>
+            <g style="font:9.5px 'JetBrains Mono',monospace; fill:var(--muted)">
+              <text x="560" y="42"><tspan fill="var(--accent)">"lat"</tspan>, <tspan fill="var(--accent)">"lon"</tspan></text>
+              <text x="560" y="55"><tspan fill="var(--accent)">"t_release"</tspan></text>
+              <text x="560" y="68"><tspan fill="var(--accent)">"confidence"</tspan></text>
+            </g>
+          </svg>
+        </div>
+        <h3 class="proj-title">OilTrace &mdash; Spill Origin Tracer</h3>
+        <p class="proj-desc">
+          SIH project. Analyses satellite imagery to detect oil spills, then backtraces
+          the drift to the actual source using particle physics and environmental factors:
+          wind speed, sea-surface temperature, water flow, tide and current.
+        </p>
+        <div class="proj-foot">
+          <div class="proj-stack">
+            <span><b>PyTorch</b></span>
+            <span><b>CUDA</b></span>
+          </div>
+          <a class="proj-link" href="https://github.com/prasadanand412/oiltrace" target="_blank" rel="noopener">github &#8599;</a>
+        </div>
+      </article>
+
+      <!-- 02 DocuSense (narrow) -->
+      <article class="proj narrow" data-tags="ml">
+        <div class="proj-head">
+          <span class="proj-idx">02 &middot; nlp &middot; document AI</span>
           <span class="proj-badges">
             <span class="proj-status hack">hackathon</span>
             <span class="proj-status live">shipped</span>
           </span>
         </div>
         <div class="proj-figure">
-          <!-- Document -> tokens -> extracted fields diagram -->
-          <svg viewBox="0 0 400 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram: a rental agreement document is processed by Qwen 2.5 7B into tokenized fields, then converted to structured JSON output with tenant, rent, term, notice, risks and score keys">
+          <!-- compact 2-stage flow for the narrow slot: document page -> local LLM -> structured JSON -->
+          <svg viewBox="0 0 350 112" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram: a rental agreement document is read by a local LLM and returned as structured JSON carrying tenant, term and risk keys">
+            <text x="8" y="11" style="font:10px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">agreement.pdf</text>
+
             <!-- document page -->
-            <g fill="none" stroke="var(--rule-strong)" stroke-width="0.8">
-              <rect x="20" y="20" width="90" height="110"/>
+            <g fill="none" stroke="var(--rule-strong)" stroke-width="0.9">
+              <rect x="8" y="18" width="90" height="76"/>
             </g>
-            <g stroke="var(--muted-2)" stroke-width="1" opacity="0.55">
-              <line x1="30" y1="34" x2="92" y2="34"/>
-              <line x1="30" y1="44" x2="85" y2="44"/>
-              <line x1="30" y1="54" x2="100" y2="54"/>
+            <g stroke="var(--muted)" stroke-width="1.1" opacity="0.5">
+              <line x1="18" y1="30" x2="86" y2="30"/>
+              <line x1="18" y1="40" x2="78" y2="40"/>
+              <line x1="18" y1="50" x2="88" y2="50"/>
             </g>
-            <g stroke="var(--accent)" stroke-width="1.2">
-              <line x1="30" y1="68" x2="70" y2="68"/>
-              <line x1="30" y1="84" x2="88" y2="84"/>
+            <g stroke="var(--accent)" stroke-width="1.4">
+              <line x1="18" y1="62" x2="68" y2="62"/>
+              <line x1="18" y1="72" x2="80" y2="72"/>
             </g>
-            <g stroke="var(--muted-2)" stroke-width="1" opacity="0.55">
-              <line x1="30" y1="96" x2="98" y2="96"/>
-              <line x1="30" y1="106" x2="80" y2="106"/>
-              <line x1="30" y1="116" x2="92" y2="116"/>
+            <g stroke="var(--muted)" stroke-width="1.1" opacity="0.5">
+              <line x1="18" y1="84" x2="84" y2="84"/>
             </g>
-            <text x="20" y="14" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">rental_agreement.pdf</text>
 
             <!-- arrow -->
-            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
-              <line x1="115" y1="75" x2="165" y2="75" stroke-dasharray="3 3"/>
-              <path d="M162 71 L168 75 L162 79" stroke="var(--accent)"/>
-            </g>
-            <text x="140" y="70" text-anchor="middle" style="font:8.5px 'JetBrains Mono',monospace; fill:var(--accent)">qwen2.5 7b</text>
-
-            <!-- token stream -->
-            <g style="font:9px 'JetBrains Mono',monospace; fill:var(--ink-strong)">
-              <rect x="175" y="30"  width="70" height="14" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
-              <text x="179" y="40">tenant</text>
-              <rect x="175" y="50"  width="70" height="14" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
-              <text x="179" y="60">rent &middot; term</text>
-              <rect x="175" y="70"  width="70" height="14" fill="var(--accent)" opacity="0.9"/>
-              <text x="179" y="80" fill="var(--bg)">clauses &middot; 12</text>
-              <rect x="175" y="90"  width="70" height="14" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
-              <text x="179" y="100">notice period</text>
-              <rect x="175" y="110" width="70" height="14" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
-              <text x="179" y="120">obligations</text>
+            <g stroke="var(--rule-strong)" stroke-width="0.9" fill="none">
+              <line x1="106" y1="56" x2="138" y2="56" stroke-dasharray="4 3"/>
+              <path d="M138 51 L146 56 L138 61" stroke="var(--accent)"/>
             </g>
 
-            <!-- second arrow -->
-            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
-              <line x1="250" y1="75" x2="290" y2="75" stroke-dasharray="3 3"/>
-              <path d="M287 71 L293 75 L287 79" stroke="var(--accent)"/>
+            <!-- structured output -->
+            <g fill="none" stroke="var(--rule)" stroke-width="0.9">
+              <rect x="154" y="18" width="188" height="76"/>
             </g>
-
-            <!-- json output -->
-            <g fill="none" stroke="var(--rule)" stroke-width="0.8">
-              <rect x="298" y="25" width="92" height="105"/>
+            <g style="font:10px 'JetBrains Mono',monospace; fill:var(--muted)">
+              <text x="162" y="32">&#123;</text>
+              <text x="170" y="46"><tspan fill="var(--accent)">"tenant"</tspan>: "...",</text>
+              <text x="170" y="60"><tspan fill="var(--accent)">"term"</tspan>: "11m",</text>
+              <text x="170" y="74"><tspan fill="var(--accent)">"risks"</tspan>: [2]</text>
+              <text x="162" y="88">&#125;</text>
             </g>
-            <g style="font:9.5px 'JetBrains Mono',monospace; fill:var(--muted)">
-              <text x="304" y="40">&#123;</text>
-              <text x="310" y="52"><tspan fill="var(--accent)">"tenant"</tspan>: "...",</text>
-              <text x="310" y="64"><tspan fill="var(--accent)">"rent"</tspan>: 24000,</text>
-              <text x="310" y="76"><tspan fill="var(--accent)">"term"</tspan>: "11m",</text>
-              <text x="310" y="88"><tspan fill="var(--accent)">"notice"</tspan>: 30,</text>
-              <text x="310" y="100"><tspan fill="var(--accent)">"risks"</tspan>: [2],</text>
-              <text x="310" y="112"><tspan fill="var(--accent)">"score"</tspan>: 0.94</text>
-              <text x="304" y="124">&#125;</text>
-            </g>
-            <text x="390" y="14" text-anchor="end" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">extracted.json</text>
+            <text x="8" y="108" style="font:10px 'JetBrains Mono',monospace; fill:var(--muted)">qwen 2.5 &middot; gemini fallback</text>
           </svg>
         </div>
         <h3 class="proj-title">DocuSense &mdash; Document Extractor</h3>
@@ -531,60 +597,6 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
             <span><b>Ollama</b></span>
           </div>
           <a class="proj-link" href="https://github.com/prasadanand412/DocuSense-document-extractor" target="_blank" rel="noopener">github &#8599;</a>
-        </div>
-      </article>
-
-      <!-- 02 OilTrace (narrow) -->
-      <article class="proj narrow" data-tags="ml sys">
-        <div class="proj-head">
-          <span class="proj-idx">02 &middot; sat imagery &middot; SIH</span>
-          <span class="proj-status">in development</span>
-        </div>
-        <div class="proj-figure">
-          <!-- satellite tile + oil spill + backtrace arrow -->
-          <svg viewBox="0 0 140 100" width="100%" height="100%" role="img" aria-label="Diagram: an oil spill detected on a satellite ocean tile, with a backtrace arrow pointing to a predicted source location, factoring in wind direction">
-            <!-- ocean tile grid -->
-            <defs>
-              <pattern id="sea" width="12" height="12" patternUnits="userSpaceOnUse">
-                <rect width="12" height="12" fill="var(--bg)"/>
-                <path d="M12 0 L0 0 0 12" fill="none" stroke="var(--rule-strong)" stroke-width="0.25" opacity="0.55"/>
-              </pattern>
-            </defs>
-            <rect x="10" y="10" width="120" height="80" fill="url(#sea)" stroke="var(--rule-strong)" stroke-width="0.6"/>
-            <!-- oil spill blob -->
-            <path d="M92,42 C102,38 112,44 110,54 C114,62 104,68 96,64 C88,68 82,58 88,52 C84,46 88,42 92,42 Z"
-                  fill="var(--accent)" opacity="0.85"/>
-            <path d="M92,42 C102,38 112,44 110,54 C114,62 104,68 96,64 C88,68 82,58 88,52 C84,46 88,42 92,42 Z"
-                  fill="none" stroke="var(--accent)" stroke-width="0.6" opacity="0.6"/>
-            <!-- backtrace arrow -->
-            <path d="M96 54 Q75 40 45 30" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 2"/>
-            <path d="M48 32 L42 28 L46 34 Z" fill="var(--accent)"/>
-            <!-- source point (predicted) -->
-            <circle cx="42" cy="28" r="3" fill="none" stroke="var(--accent)" stroke-width="1"/>
-            <circle cx="42" cy="28" r="1.4" fill="var(--accent)"/>
-            <!-- wind vector -->
-            <g stroke="var(--muted)" stroke-width="0.5" opacity="0.7">
-              <line x1="20" y1="20" x2="32" y2="20"/>
-              <line x1="30" y1="18" x2="32" y2="20"/>
-              <line x1="30" y1="22" x2="32" y2="20"/>
-            </g>
-            <text x="14" y="18" style="font:7px 'JetBrains Mono',monospace; fill:var(--muted)">wind</text>
-            <text x="42" y="22" text-anchor="middle" style="font:7px 'JetBrains Mono',monospace; fill:var(--accent)">src?</text>
-            <text x="100" y="78" text-anchor="middle" style="font:7px 'JetBrains Mono',monospace; fill:var(--accent)">spill</text>
-          </svg>
-        </div>
-        <h3 class="proj-title">OilTrace &mdash; Spill Origin Tracer</h3>
-        <p class="proj-desc">
-          SIH project. Analyses satellite imagery to detect oil spills, then backtraces
-          the drift to the actual source using particle physics and environmental factors:
-          wind speed, sea-surface temperature, water flow, tide and current.
-        </p>
-        <div class="proj-foot">
-          <div class="proj-stack">
-            <span><b>PyTorch</b></span>
-            <span><b>CUDA</b></span>
-          </div>
-          <a class="proj-link" href="https://github.com/prasadanand412/oiltrace" target="_blank" rel="noopener">github &#8599;</a>
         </div>
       </article>
 
@@ -685,6 +697,117 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
             <span><b>SQL</b></span>
           </div>
           <a class="proj-link" href="https://github.com/prasadanand412/blood-bank-management-system" target="_blank" rel="noopener">github &#8599;</a>
+        </div>
+      </article>
+
+      <!-- 05 Document Analyzer / zero-shot classifier (full-width feature) -->
+      <article class="proj full" data-tags="ml">
+        <div class="proj-head">
+          <span class="proj-idx">05 &middot; nlp &middot; zero-shot classification</span>
+          <span class="proj-status">in development</span>
+        </div>
+        <div class="proj-figure">
+          <!-- Zero-shot NLI pipeline: document as premise, labels as hypotheses, entailment ranking -->
+          <svg viewBox="0 0 1000 140" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram: a document is treated as an NLI premise while each candidate label is expanded into a natural-language hypothesis; bart-large-mnli scores each pair with its entailment head and the highest-entailment label is returned as the document type, with no fine-tuning">
+
+            <!-- 1. document / premise -->
+            <text x="20" y="14" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">document.pdf</text>
+            <rect x="20" y="24" width="120" height="92" fill="none" stroke="var(--rule-strong)" stroke-width="0.8"/>
+            <g stroke="var(--muted-2)" stroke-width="1" opacity="0.6">
+              <line x1="32" y1="40" x2="126" y2="40"/>
+              <line x1="32" y1="52" x2="112" y2="52"/>
+              <line x1="32" y1="88" x2="120" y2="88"/>
+              <line x1="32" y1="100" x2="104" y2="100"/>
+            </g>
+            <g stroke="var(--accent)" stroke-width="1.2">
+              <line x1="32" y1="66" x2="98" y2="66"/>
+              <line x1="32" y1="76" x2="116" y2="76"/>
+            </g>
+            <text x="80" y="134" text-anchor="middle" style="font:8px 'JetBrains Mono',monospace; fill:var(--accent)">premise</text>
+
+            <!-- arrow -->
+            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
+              <line x1="152" y1="70" x2="192" y2="70" stroke-dasharray="3 3"/>
+              <path d="M189 66 L195 70 L189 74" stroke="var(--accent)"/>
+            </g>
+
+            <!-- 2. candidate labels -> hypothesis template -->
+            <text x="210" y="14" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">candidate_labels</text>
+            <g style="font:8.5px 'JetBrains Mono',monospace; fill:var(--ink-strong)">
+              <rect x="210" y="22" width="112" height="15" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
+              <text x="216" y="33">contract</text>
+              <rect x="210" y="41" width="112" height="15" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
+              <text x="216" y="52">notice</text>
+              <rect x="210" y="60" width="112" height="15" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
+              <text x="216" y="71">invoice</text>
+              <rect x="210" y="79" width="112" height="15" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
+              <text x="216" y="90">identity record</text>
+              <rect x="210" y="98" width="112" height="15" fill="none" stroke="var(--rule-strong)" stroke-width="0.6"/>
+              <text x="216" y="109">rental agreement</text>
+            </g>
+            <path d="M330 34 Q340 34 340 60 L340 76 Q340 102 330 102" fill="none" stroke="var(--rule-strong)" stroke-width="0.8"/>
+            <path d="M340 64 L352 68 L340 72" fill="var(--accent)"/>
+            <text x="360" y="44" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">hypothesis</text>
+            <g style="font:8.5px 'JetBrains Mono',monospace; fill:var(--accent)">
+              <text x="360" y="64">"This document</text>
+              <text x="360" y="78">is a {label}."</text>
+            </g>
+            <text x="290" y="134" text-anchor="middle" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted)">one pair per label</text>
+
+            <!-- arrow -->
+            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
+              <line x1="486" y1="70" x2="526" y2="70" stroke-dasharray="3 3"/>
+              <path d="M523 66 L529 70 L523 74" stroke="var(--accent)"/>
+            </g>
+
+            <!-- 3. NLI model -->
+            <rect x="540" y="26" width="196" height="88" fill="none" stroke="var(--accent-soft)" stroke-width="0.9"/>
+            <text x="638" y="46" text-anchor="middle" style="font:9.5px 'JetBrains Mono',monospace; fill:var(--ink-strong)">bart-large-mnli</text>
+            <line x1="556" y1="56" x2="720" y2="56" stroke="var(--rule)" stroke-width="0.8" stroke-dasharray="2 3"/>
+            <g style="font:8.5px 'JetBrains Mono',monospace;">
+              <rect x="556" y="64" width="164" height="14" fill="var(--accent)" opacity="0.9"/>
+              <text x="562" y="74" fill="var(--bg)">entailment</text>
+              <text x="562" y="92" fill="var(--muted)">neutral</text>
+              <text x="562" y="106" fill="var(--muted)">contradiction</text>
+            </g>
+            <text x="638" y="134" text-anchor="middle" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted)">no task-specific training</text>
+
+            <!-- arrow -->
+            <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
+              <line x1="748" y1="70" x2="788" y2="70" stroke-dasharray="3 3"/>
+              <path d="M785 66 L791 70 L785 74" stroke="var(--accent)"/>
+            </g>
+
+            <!-- 4. classified output -->
+            <text x="980" y="14" text-anchor="end" style="font:8px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">classified.json</text>
+            <rect x="802" y="24" width="178" height="92" fill="none" stroke="var(--rule)" stroke-width="0.8"/>
+            <g style="font:9px 'JetBrains Mono',monospace; fill:var(--muted)">
+              <text x="810" y="42">&#123;</text>
+              <text x="818" y="60"><tspan fill="var(--accent)">"doc_type"</tspan>: "contract",</text>
+              <text x="818" y="78"><tspan fill="var(--accent)">"runner_up"</tspan>: "notice",</text>
+              <text x="818" y="96"><tspan fill="var(--accent)">"fine_tuned"</tspan>: false</text>
+              <text x="810" y="112">&#125;</text>
+            </g>
+            <text x="891" y="134" text-anchor="middle" style="font:8px 'JetBrains Mono',monospace; fill:var(--accent)">argmax entailment</text>
+          </svg>
+        </div>
+        <h3 class="proj-title">Document Analyzer &mdash; Zero-Shot Classifier</h3>
+        <p class="proj-desc">
+          Current work at <em>Cubeage Technologies</em>. Labels long-form documents by type &mdash;
+          contracts, notices, invoices, identity records &mdash; by turning each candidate label into a
+          natural-language hypothesis and scoring it against the document with
+          <em>bart-large-mnli</em>'s entailment head. Because the classification is zero-shot,
+          supporting a new document type means editing the label set rather than collecting
+          examples and retraining.
+        </p>
+        <div class="proj-foot">
+          <div class="proj-stack">
+            <span><b>Python</b></span>
+            <span><b>bart-large-mnli</b></span>
+            <span><b>Transformers</b></span>
+            <span><b>PyTorch</b></span>
+          </div>
+          <span>internal &middot; cubeage</span>
         </div>
       </article>
 
