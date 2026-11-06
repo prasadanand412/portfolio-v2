@@ -23,7 +23,7 @@ This project was originally scaffolded on Hono + Cloudflare Pages, then **conver
 ## Data Architecture
 - **Data Models**: None — fully static content, no database. All copy, skills, experience entries, and project data live directly in `index.html`.
 - **Storage Services**: None. No backend, no database, no cloud bindings of any kind.
-- **Data Flow**: Static HTML file served as-is; a small vanilla JS file (`static/app.js`) handles all client-side interactivity (theme toggle, typing animation, project filter, scroll-based nav highlighting, contact-form UI stub).
+- **Data Flow**: Static HTML file served as-is; a small vanilla JS file (`static/app.js`) handles all client-side interactivity (theme toggle, typing animation, project filter, scroll-based nav highlighting, and the live last-commit stamp fetched from the public GitHub API).
 
 ## Sections (single long-scroll page, anchor nav)
 1. **Top bar** (`.topbar`) — sticky, brand mark, nav links, status pill, theme toggle
@@ -32,24 +32,22 @@ This project was originally scaffolded on Hono + Cloudflare Pages, then **conver
 4. **Skills** (`#skills`) — 4 tiers of tech chips (daily driver / comfortable / exploring / foundations)
 5. **Experience** (`#experience`) — 3 internship entries, reverse chronological
 6. **Projects** (`#projects`) — filterable project grid (all / ml-nlp / systems / web): DocuSense, OilTrace, WellnessPlus, Blood Bank Management
-7. **Contact** (`#contact`) — contact info (email/LinkedIn/GitHub/LeetCode/Codeforces) + a client-side-only contact form stub
+7. **Contact** (`#contact`) — contact info (email/LinkedIn/GitHub/LeetCode/Codeforces) and direct links; no form
 8. **Footer** — quick links
 
 CLI strips act as section dividers throughout, matching the "engineer's notebook" aesthetic.
 
 ## User Guide
-Visit `/` — that's the entire site (no other routes). Use the top nav or scroll to move between sections; the active nav link highlights based on scroll position. The theme follows the OS setting (`prefers-color-scheme`) on first visit and keeps tracking OS changes until an explicit choice is made. Click the theme toggle (top-right) to override dark/light — the choice persists via `localStorage`. In the Projects section, use the filter buttons to narrow the grid by tag. The contact form has **no backend by design**: submitting composes a prefilled `mailto:` draft and hands it to the visitor's mail client, so nothing is stored or transmitted by this site.
+Visit `/` — that's the entire site (no other routes). Use the top nav or scroll to move between sections; the active nav link highlights based on scroll position. The theme follows the OS setting (`prefers-color-scheme`) on first visit and keeps tracking OS changes until an explicit choice is made. Click the theme toggle (top-right) to override dark/light — the choice persists via `localStorage`. In the Projects section, use the filter buttons to narrow the grid by tag. The hero's `last commit` stamp is fetched live from the public GitHub API and refreshes on every page load, on tab focus, and every five minutes while the page stays open; contact happens through the direct email/LinkedIn links.
 
 ## Not Yet Implemented
-- **Contact form backend**: the form hands off to the visitor's mail client via `mailto:` rather than posting anywhere. Server-side delivery would need a Vercel Function or a form service (Formspree, Resend) - the only feature that would justify server-side code here.
 - **Analytics**: none wired.
 - **OG image**: meta tags reference title/description only; no static Open Graph image generated yet.
 
 ## Recommended Next Steps
 1. Deploy to Vercel (see below).
-2. If a real contact-form backend is wanted, add a single Vercel Function (`api/contact.ts`) or wire to Formspree/Resend — this is the only feature that would justify any server-side code in this project.
-3. Decide on final favicon / OG image and add them.
-4. Optional: revisit the "Whitepaper" direction later if a second design is wanted — not built in this pass per explicit request.
+2. Decide on final favicon / OG image and add them.
+3. Optional: revisit the "Whitepaper" direction later if a second design is wanted — not built in this pass per explicit request.
 
 ## Design Tokens (Blueprint)
 - **Colors (dark, default)**: `--bg #0d0e10` · `--bg-elev #131518` · `--ink #e8e6df` · `--ink-strong #ffffff` · `--muted #7a7873` · `--accent #c26a3a` (muted rust)
@@ -85,7 +83,7 @@ HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
 - **`img-src 'self'`** deliberately omits `data:` since nothing uses data-URI images today.
   Add it back if that changes.
 - **`connect-src`** allows `https://api.github.com` for the hero's last-commit stamp.
-- **`form-action 'self' mailto:`** allows the contact form's `mailto:` handoff.
+- **`form-action 'none'`** — the site has no forms; contact is via `<a href="mailto:">` links.
 - On **Vercel preview deployments** the injected Vercel toolbar may be blocked by
   `script-src 'self'`. Production is unaffected.
 
@@ -113,4 +111,4 @@ npm run build
 npm run preview   # vite preview on localhost:4173
 ```
 
-- **Last Updated**: 2026-08-31 (self-hosted fonts, OS-aware theme with pre-paint resolve, CSP + security headers, mailto contact handoff, real last-commit stamp, dead/duplicate assets removed)
+- **Last Updated**: 2026-11-06 (live auto-refreshing last-commit stamp across public repos, contact form removed)

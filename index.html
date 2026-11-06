@@ -405,6 +405,59 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
         <div class="xp-arrow" aria-hidden="true">&rarr;</div>
       </article>
     </div>
+
+    <!-- RAG pipeline figure -->
+    <figure class="about-figure" style="margin:40px 0 0; max-width:720px;">
+      <svg viewBox="0 0 660 110" width="100%" role="img" aria-labelledby="rag-title rag-desc">
+        <title id="rag-title">RAG pipeline</title>
+        <desc id="rag-desc">A left-to-right pipeline: a query is matched against a document index by a retriever, candidates are reranked, and the LLM answers grounded in the retrieved context.</desc>
+        <style>
+          .rag-name { font: 10px 'JetBrains Mono', monospace; fill: var(--ink-strong); text-anchor: middle; }
+          .rag-sub  { font: 8.5px 'JetBrains Mono', monospace; fill: var(--muted); text-anchor: middle; }
+        </style>
+        <text x="10" y="14" style="font:9px 'JetBrains Mono',monospace; fill:var(--muted); letter-spacing:0.05em">rag.pipeline &middot; current nlp work</text>
+
+        <!-- stage boxes -->
+        <g fill="none" stroke="var(--rule-strong)" stroke-width="0.9">
+          <rect x="10"  y="34" width="96" height="40"/>
+          <rect x="146" y="34" width="96" height="40"/>
+          <rect x="282" y="34" width="96" height="40"/>
+          <rect x="418" y="34" width="96" height="40"/>
+          <rect x="554" y="34" width="96" height="40"/>
+        </g>
+        <g class="rag-name">
+          <text x="58"  y="52">query</text>
+          <text x="194" y="52">retriever</text>
+          <text x="330" y="52">reranker</text>
+          <text x="466" y="52">LLM</text>
+          <text x="602" y="52">answer</text>
+        </g>
+        <g class="rag-sub">
+          <text x="58"  y="66">user question</text>
+          <text x="194" y="66">vector search</text>
+          <text x="330" y="66">score &amp; prune</text>
+          <text x="466" y="66">grounded prompt</text>
+          <text x="602" y="66">with citations</text>
+        </g>
+
+        <!-- dashed arrows -->
+        <g stroke="var(--rule-strong)" stroke-width="0.8" fill="none">
+          <line x1="110" y1="54" x2="138" y2="54" stroke-dasharray="3 3"/>
+          <line x1="246" y1="54" x2="274" y2="54" stroke-dasharray="3 3"/>
+          <line x1="382" y1="54" x2="410" y2="54" stroke-dasharray="3 3"/>
+          <line x1="518" y1="54" x2="546" y2="54" stroke-dasharray="3 3"/>
+        </g>
+        <g stroke="var(--accent)" stroke-width="0.9" fill="none">
+          <path d="M135 50 L141 54 L135 58"/>
+          <path d="M271 50 L277 54 L271 58"/>
+          <path d="M407 50 L413 54 L407 58"/>
+          <path d="M543 50 L549 54 L543 58"/>
+        </g>
+      </svg>
+      <figcaption class="figure-cap">
+        <b>fig. 02</b> &mdash; retrieval-augmented generation &middot; the shape of the pipeline behind the document work
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -518,7 +571,8 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
         </div>
         <h3 class="proj-title">OilTrace &mdash; Spill Origin Tracer</h3>
         <p class="proj-desc">
-          SIH project. Analyses satellite imagery to detect oil spills, then backtraces
+          You feed it a satellite image and it tells you where an oil spill is and where it
+          probably came from. Analyses satellite imagery to detect oil spills, then backtraces
           the drift to the actual source using particle physics and environmental factors:
           wind speed, sea-surface temperature, water flow, tide and current.
         </p>
@@ -584,9 +638,11 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
         </div>
         <h3 class="proj-title">DocuSense &mdash; Document Extractor</h3>
         <p class="proj-desc">
-          A document analyzer that reads any long-form document &mdash; land registration, rental
-          agreements, resumes &mdash; and returns the important terms, clauses and risks as
-          structured data. For resumes it produces an ATS-style score. Runs on <em>local LLMs</em>
+          Reads a long document and pulls out the important terms, clauses and risks for
+          you &mdash; no reading required. A document analyzer that reads any long-form
+          document &mdash; land registration, rental agreements, resumes &mdash; and returns the
+          important terms, clauses and risks as structured data. For resumes it produces an
+          ATS-style score. Runs on <em>local LLMs</em>
           (Qwen 2.5 7B via Ollama) with the Google Gemini API as a fallback.
         </p>
         <div class="proj-foot">
@@ -838,7 +894,7 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
     </div>
 
     <div class="contact-grid">
-      <div></div>
+      <div class="contact-gutter" aria-hidden="true"></div>
       <div class="contact-info">
         <dl>
           <dt>// resume</dt>
@@ -857,28 +913,6 @@ trace.<span class="tok-fn">backtrace</span>()<span class="caret" aria-hidden="tr
           <dd>Pune, Maharashtra &middot; IN &middot; IST</dd>
         </dl>
       </div>
-      <!-- No backend by design: submitting hands off to the visitor's mail client.
-           method="post" + the mailto action matter for security - without them a
-           JS failure would fall back to a GET and put the message in the URL. -->
-      <form id="contact-form" method="post" action="mailto:prasadanand412@gmail.com" enctype="text/plain">
-        <div class="field">
-          <label for="n">01 &middot; full name</label>
-          <input id="n" name="name" required autocomplete="name" placeholder="jane doe"/>
-        </div>
-        <div class="field">
-          <label for="e">02 &middot; email address</label>
-          <input id="e" name="email" type="email" required autocomplete="email" placeholder="jane@company.com"/>
-        </div>
-        <div class="field">
-          <label for="m">03 &middot; message</label>
-          <textarea id="m" name="message" required placeholder="what are you working on?"></textarea>
-        </div>
-        <p class="form-note">No backend here by design &mdash; sending opens a prefilled draft in your mail client, so nothing is stored or transmitted by this site. The email address is on the left if you prefer.</p>
-        <div class="form-actions">
-          <small>replies within 48h &middot; IST business hours</small>
-          <button type="submit" class="btn primary">send message <span class="arrow" aria-hidden="true">&rarr;</span></button>
-        </div>
-      </form>
     </div>
   </div>
 </section>
