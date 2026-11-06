@@ -2,7 +2,7 @@
 
 ## Project Overview
 - **Name**: Prasad Anand — Portfolio ("Blueprint" direction)
-- **Goal**: A personal single-page portfolio for Prasad Anand, a computer-engineering student and AI/ML intern in Pune, IN. Presents identity, background, skills, work history, and selected projects, with a way to get in touch.
+- **Goal**: A personal single-page portfolio for Prasad Anand, an AI/ML student in Pune, IN. Presents identity, background, skills, work history, and selected projects, with a way to get in touch.
 - **Source**: Recreated from a Genspark Design handoff (SB-Git repo `designer2-20c40100-f553-43ec-a5cd-7831ee521685`, `design_handoff_portfolio_redesign`). Two directions were explored in the handoff ("Blueprint" and "Whitepaper") — **only Blueprint was built**, per explicit instruction.
 - **Aesthetic**: Dark-first "engineer's notebook" look — grid-paper background, muted rust accent, JetBrains Mono + Fraunces typography, Jupyter-notebook-style hero with a live-typing terminal cell and inline SVG loss chart, CLI marquee strips between sections. Includes a light theme toggle.
 
